@@ -1,0 +1,24 @@
+{
+    "name": "jsoftb/Auth0",
+    "description": "Auth0 Authenticate object for CakePHP 3.x",
+    "type": "cakephp-plugin",
+    "require": {
+        "php": ">=5.4.16",
+        "cakephp/cakephp": "~3.0",
+	"auth0/auth0-php": "~3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Auth0\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Auth0\\Test\\": "tests",
+            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+        }
+    }
+}
