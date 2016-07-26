@@ -4,7 +4,7 @@ Auth0 Authenticate Object for Cakephp 3.x
 More reference about auth0 services: https://auth0.com/
 
 # Installation
-Add to your composer.json file "auth0/auth0-php": "~3.0"
+Add to your composer.json file "jsoftb/auth0": "dev-master"
 Run composer update
 
 # Configuration
