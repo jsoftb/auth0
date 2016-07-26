@@ -10,7 +10,7 @@ Run composer update
 # Configuration
 
 Open your AppController and inside the initialize function
-
+```
 $this->loadComponent('Auth', [
             'authenticate' => [
                 'Auth0.Auth0' => [
@@ -21,6 +21,7 @@ $this->loadComponent('Auth', [
                 ]
             ],
 ]);
+```
 
 Follow the instructions about how to set up the login page in Auth0
 
