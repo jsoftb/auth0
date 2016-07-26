@@ -1,5 +1,5 @@
 {
-    "name": "jsoftb/Auth0",
+    "name": "jsoftb/auth0",
     "description": "Auth0 Authenticate object for CakePHP 3.x",
     "type": "cakephp-plugin",
     "require": {
