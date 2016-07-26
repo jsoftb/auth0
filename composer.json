@@ -10,6 +10,21 @@
     "require-dev": {
         "phpunit/phpunit": "*"
     },
+    "keywords": [
+        "cakephp",
+        "oauth2",
+        "auth0",
+        "authentication",
+        "auth"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Juan Giménez",
+            "homepage": "http://www.montcat.org/portfolio",
+            "role": "Author"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Auth0\\": "src"
