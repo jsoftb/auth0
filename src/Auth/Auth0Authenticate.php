@@ -47,6 +47,11 @@ class Auth0Authenticate extends BaseAuthenticate
         }
         return $user;
     }
+    
+     public function logout()
+    {
+    	$this->_auth0->logout();
+    }
 
     public function getUser(Request $request)
     {
