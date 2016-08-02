@@ -1,8 +1,9 @@
 <?php
-namespace Auth\Test\TestCase\Auth;
+namespace Authelper\Test\TestCase\Auth;
 
-use Auth0\Auth\Auth0Authenticate;
+use Authhelper\Auth\Auth0Authenticate;
 use Cake\TestSuite\TestCase;
+use Authhelper\Model\Auth0\Auth0User;
 
 class AuthAuthenticateTest extends TestCase{
 
@@ -19,20 +20,21 @@ class AuthAuthenticateTest extends TestCase{
         parent::setUp();
 
         $this->registry = $this->getMock('Cake\Controller\ComponentRegistry');
+        
         $this->request = $this->getMockBuilder('\Cake\Network\Request')
             ->disableOriginalConstructor()
             ->getMock();
+        
         $this->response = $this->getMockBuilder('\Cake\Network\Response')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->auth0 = $this->getMockBuilder('Auth0\SDK\Auth0')
             ->disableOriginalConstructor()
+            ->setMethods(['getUser', 'deleteAllPersistentData', 'setAccessToken', 'setIdToken', 'setUser' ])
             ->getMock();
 
         $this->authenticate = new Auth0Authenticate($this->registry, $this->config, $this->auth0);
-
-
 
     }
 
@@ -79,20 +81,90 @@ class AuthAuthenticateTest extends TestCase{
      *
      * @test
      */
-    public function getUser_userIsAuth_executeCorrectly()
+    public function getUser_userIsAuth_returnCorrectly()
     {
-        $expected = 'aDummyUserInfo';
-
-        $authenticate = new Auth0Authenticate($this->registry, $this->config, $this->auth0);
-
+        $user = ['user_id' => 'auth0|aDummyId'];
+        
         $this->auth0->expects($this->once())
             ->method('getUser')
-            ->will($this->returnValue($expected));
+            ->will($this->returnValue($user));
 
         $actual = $this->authenticate->authenticate($this->request, $this->response);
 
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($user, $actual);
 
     }
+    
+    /**
+     * method logout
+     * when always
+     * should executeCorrectly
+     *
+     * @test
+     */
+    public function logout_always_executeCorrectly()
+    {
+		$this->auth0->expects($this->once())
+            ->method('deleteAllPersistentData');
+		
+        $this->auth0->expects($this->once())
+            ->method('setAccessToken')
+            ->with($this->equalTo(null));
+        
+        $this->auth0->expects($this->once())
+            ->method('setUser')
+            ->with($this->equalTo(null));
+        
+        $this->auth0->expects($this->once())
+            ->method('setIdToken')
+            ->with($this->equalTo(null));
+    
+    	$actual = $this->authenticate->logout();
+    }
+    
+    
+    /**
+     * method getUserModel
+     * when userIsNotAuth
+     * should returnFalse
+     *
+     * @test
+     */
+    public function getUserModel_userIsNotAuth_returnFalse()
+    {
+    	$expected = false;
+    
+    	$this->auth0->expects($this->once())
+    		->method('getUser')
+    		->will($this->returnValue(null));
+    
+    	$actual = $this->authenticate->getUserModel($this->request, $this->response);
+    
+    	$this->assertFalse($actual);
+    
+    }
+    
+    /**
+     * method getUserModel
+     * when userIsAuth
+     * should returnCorrectly
+     *
+     * @test
+     */
+    public function getUserModel_userIsAuth_returnCorrectly()
+    {
+    	$user = ['user_id' => 'auth0|aDummyId'];
+    	$expected = new Auth0User($user);
+    
+    	$this->auth0->expects($this->once())
+    		->method('getUser')
+    		->will($this->returnValue($user));
+    
+    	$actual = $this->authenticate->getUserModel($this->request, $this->response);
+    
+    	$this->assertEquals($expected, $actual);
+    
+    }
+    
 
 } 
